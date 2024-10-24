@@ -3,55 +3,23 @@ sidebar_position: 1
 slug: /
 ---
 
-# Introduction
+# Overview
 
-Scalegen Document-Copilot is a cutting-edge tool designed to revolutionize the way you interact with your documents. With its comprehensive suite of features, Document-Copilot enables seamless document management, enhanced communication, and in-depth analytics.
+### What is AtomicCD?
 
-## Key Features
+AtomicCD is a lightweight continuous delivery tool for Kubernetes
 
-### 📁 Folders and File System
+### Why atomicCD?
 
-- **Organize Documents**: Effortlessly organize your documents into folders and subfolders.
-- **Easy Access**: Quickly access your files with an intuitive file management system.
-- **Secure Storage**: Keep your documents safe with robust security measures.
+AtomicCD purely focuses on continuous delivery of application's image and image versions rather than monitoring the whole deployment manifest which inturn makes the cd tools to monitor for other K8s resources like configmaps, secrets, PVCs, PVs, etc. This approach makes atomicCD lightweight and simple.
 
-### 🗂️ Knowledge Base
+## How does AtomicCD works?
+AtmoicCD uses GitOps approach wherein it uses yaml configurations in git repositories as the source of truth. AtomicCD does not monitor yaml manifests or helm charts instead it monitors custom config which is called "Target Config" in AtomicCD.
 
-- **Centralized Information**: Store and manage critical information in a centralized knowledge base.
-- **Easy Retrieval**: Quickly find the information you need with advanced search capabilities.
-- **Consistent Updates**: Ensure your knowledge base is always up-to-date with regular updates and easy editing.
+## Architecture
 
-### 💬 Chat on Documents
+![architecture](../static/img/AtomicCD.jpeg)
 
-- **Interactive Chat**: Engage in real-time conversations on any document.
-- **Contextual Discussions**: Maintain context by having discussions directly within the document environment.
-- **Collaboration**: Collaborate with team members to work or chat on documents in real-time.
-
-### 🛠️ Chat Management
-
-- **Organized Conversations**: Manage multiple chats with ease using an organized chat management system.
-- **Prioritize Discussions**: Focus on the most critical discussions by prioritizing chats.
-- **Pin Chats**: Pin old chats to keep your important chat focused on dashboard.
-
-### 📊 Analytics
-
-- **Usage Metrics**: Gain insights into how your documents are used with comprehensive usage metrics.
-- **Performance Reports**: Generate detailed performance reports to understand document and chat engagement.
-- **Data-Driven Decisions**: Make informed decisions based on real-time data analytics.
-
-## Benefits
-
-- **Improved Efficiency**: Streamline your document management and collaboration processes.
-- **Enhanced Collaboration**: Foster better teamwork with real-time chat and collaboration.
-- **Data-Driven Insights**: Utilize analytics to optimize document usage and engagement.
-
-## Getting Started
-
-1. **Sign Up**: Create an account on the [document-copilot.scalegen.ai](https://document-copilot.scalegen.ai)
-   platform.
-2. **Upload Documents**: Begin by uploading your documents and organizing them into folders.
-3. **Create Knowledge Base**: Set up your knowledge base with essential information.
-4. **Start Chatting**: Engage in contextual chats directly within your documents.
-5. **Analyze and Optimize**: Use the analytics dashboard to monitor performance and make improvements.
+AtomicCD runs in a pod with a deployment. It doesn't have a controller. The AtomicCD deployement does all the CD work. It compare the Target Config in git repository with the current state of deployed Image and Image version within the K8s cluster and if any of it is found to be out of sync, it updates the new image or image version to the api server.
 
 ---

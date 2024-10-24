@@ -106,7 +106,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} ScaleGenAI.`,
+      copyright: `Copyright © ${new Date().getFullYear()} AtomicCD.`,
     },
     prism: {
       theme: prismThemes.github,
