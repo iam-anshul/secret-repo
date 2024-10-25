@@ -12,22 +12,49 @@ The following is an example of Target Config
 targetConfig:
   - targetName: example-1
     containers:
-    - containerName: "cd-deploy"
-      containerImage: "python"
-      containerTag: "3.9"
-    name: cd-deploy
-    type: statefulset
+    - containerName: "gocontainer"
+      containerImage: "golang"
+      containerTag: "latest"
+    name: app-deploy
+    type: deployment
     namespace: default
     scope: nameScoped
-
 ```
-In this example:
+
+The following is the deployment manifest this Target Config applies to:
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-deploy
+spec:
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: gocontainer
+        image: golang:latest
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80
+```
+
+In the above Target Config example:
 - Provide Identity to a target with `targetName`. This is the block under which Image and 
   Image versions gets specified for deployments or statefulsets.
 
 - The `containers` field specifies the container name, container image and container tag. 
   - Update image by changing the value of `containerImage`.
-  - Update image version or image tag by changing the the value of `containerTag`
+  - Update image version or image tag by changing the value of `containerTag` field.
   - The value of `containerName` specifies the name of container in which `containerImage`  and `containerTag` spec will get applied to.
 
 - The `name` field sets the name of deployment or statefulset that has the containers 
@@ -44,7 +71,7 @@ In this example:
 - The `scope` field specifies the scope of the configurations of the Target Config. If there 
   is a certain Image that is being used by multiple resources whether deployments or statefulsets in a namespace, there is no need to make multiple targets in Target Config, instead set the `scope` field value to `namespaceScoped` and all the deployments and statefulsets that contains the image specified in `containerImage` field will get synced to the image version specified in `containerTag` field within the namepsace. If there is no such use case, setting `scope` field value to `nameScoped` will make the config applied to a certain deployment or statefulset defined in `name` field.
   #### Note:
-   - When scope is set to `namespaceScoped`, `name` and `type` filed are not allowed along 
+   - When scope is set to `namespaceScoped`, `name` and `type` fields are not allowed along 
      with `containerName` field within `containers`.
    - For AtomicCD to work properly image tag must needed to be explicitly specified in the  deployment or statefulset configuration.
 
@@ -269,8 +296,11 @@ targetConfig:
     type: statefulset
     namespace: default
     scope: nameScoped
-  
 ```
 
+## Sync Frequency
+AtomicCD look up the Target Cing in git repository at every 3 minutes, meaning every sync happens at 3 minutes interval.
+
+AtomicCD provides sync triggers with webhooks (explained in Track Config section).
 
 ---
