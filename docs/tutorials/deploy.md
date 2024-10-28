@@ -116,7 +116,7 @@ targetConfig:
 
 6. Create a Configmap name with a Track Config file
 
-    - Make a file named `configmap.yaml`. Below in the track config configmap, replace "your github repository url" with your actual repository URL. Copy the final contents in your `configmap.yaml` file.
+    - Make a file named `configmap.yaml`. Below in the track config configmap, replace "your github repository url" with your actual repository URL. Copy the final contents in your `configmap.yaml` file. Make sure the branch is `main`.
 
     ```yaml
     apiVersion: v1
