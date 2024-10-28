@@ -100,6 +100,10 @@ targetConfig:
           containers:
           - name: python-container
             image: python:3.9
+            command: ["sh", "-c"]
+            args:
+            - |
+                bash -c "sleep 99999999"
             resources:
               limits:
                 memory: "128Mi"
