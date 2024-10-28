@@ -46,7 +46,7 @@ This tutorial shows how to deploy AtomicCD a Kubernetes Cluster.
     - Apply the file using `kubectl apply -f sa.yaml` command.
 
 3. Create a Cluster Role Binding to bind the above Service Account and Cluster Role with each other.
-    - Make a Cluster Role Binding file name `cluster-role.yaml` and copy the contents of the below cluster role binding file in it.
+    - Make a Cluster Role Binding file name `cluster-role-binding.yaml` and copy the contents of the below cluster role binding file in it.
 
     ```yaml
     apiVersion: rbac.authorization.k8s.io/v1
@@ -63,7 +63,7 @@ This tutorial shows how to deploy AtomicCD a Kubernetes Cluster.
       namespace: default
     ```
 
-    - Apply the file using `kubectl apply -f cluster-role.yaml` command.
+    - Apply the file using `kubectl apply -f cluster-role-binding.yaml` command.
 
 4. In your Github repository make a target config file named `targetConfig.yaml` at root directory and copy the below target config files in it.
 ```yaml
@@ -92,27 +92,27 @@ targetConfig:
       selector:
         matchLabels:
           app: python-deployment
-    template:
-        metadata:
-          labels:
-            app: python-deployment
-        spec:
-          containers:
-          - name: python-container
-            image: python:3.9
-            command: ["sh", "-c"]
-            args:
-            - |
-                bash -c "sleep 99999999"
-            resources:
-              limits:
-                memory: "128Mi"
-                cpu: "50m"
-            ports:
-            - containerPort: 80
+      template:
+          metadata:
+            labels:
+              app: python-deployment
+          spec:
+            containers:
+            - name: python-container
+              image: python:3.9
+              command: ["sh", "-c"]
+              args:
+              - |
+                  bash -c "sleep 99999999"
+              resources:
+                limits:
+                  memory: "128Mi"
+                  cpu: "50m"
+              ports:
+              - containerPort: 80
     ```
 
-    - Apply the file with `kubecyl apply -f python-deployment.yaml` command.
+    - Apply the file with `kubectl apply -f python-deployment.yaml` command.
 
 6. Create a Configmap name with a Track Config file
 
@@ -145,28 +145,28 @@ targetConfig:
       selector:
         matchLabels:
           app: atomic-cd
-    template:
-        metadata:
-          labels:
-            app: atomic-cd
-        spec:
-        serviceAccountName: sa
-        containers:
-        - name: atomic-cd
-          image: iamanshul14/atomic-cd:latest
-          volumeMounts:
-          - name: config-vol
-            mountPath: /AtomicCD/config
-            resources:
-              limits:
-                memory: "50Mi"
-                cpu: "30m"
-            ports:
-            - containerPort: 8080
-        volumes:
-        - name: config-vol
-          configMap:
-            name: atomic-cd-cm
+      template:
+          metadata:
+            labels:
+              app: atomic-cd
+          spec:
+            serviceAccountName: sa
+            containers:
+            - name: atomic-cd
+              image: iamanshul14/atomiccd:v1
+              resources:
+                limits:
+                  memory: "50Mi"
+                  cpu: "30m"
+              volumeMounts:
+              - name: config-vol
+                mountPath: /AtomicCD/config
+              ports:
+                - containerPort: 8080
+            volumes:
+            - name: config-vol
+              configMap:
+                name: atomic-cd-cm
     ```
     
     - Apply the file using `kubectl apply -f deploy.yaml` command.
@@ -178,11 +178,13 @@ targetConfig:
 
 - In the command: `kubectl logs your-atomiccd-pod-name --follow`, change **"your-atomiccd-pod-name"** with the AtomicCD pod name you copied above. Run the command.
 
-- If everything goes fine you will see `running` output in the container log of AtomicCD. Do not close this terminal tab and keep tracking the logs.
+- If everything goes fine you will see `running` output in the container log of AtomicCD. Do not close this terminal tab and keep tracking the logs. When you see the `running` log in AtomicCD pod it means that AtomicCD has scanned the Track Config in repository.
 
 - Go to your Github repository and change the value of `containerTag` field to `3.10` and commit the change.
 
-- AtomicCD scans for Track Config in github repo every 3 minutes, so wait for around 3 minutes and keep a track on AtomicCD container logs, you will the log `Out of sync Deployment: python-deployment with Container Name python-container` and `Sync Successfull!`. This means AtomicCD have succefully executed CD for python app and change the python app version from `3.9` to `3.10`.
+- AtomicCD scans for Track Config in github repo every 3 minutes, so wait for around 3 to 6  minutes and keep a track on AtomicCD container logs. The wait time can vary depending on the time you have commited changed container tag and last executed scan of AtomicCD so a little patience is required. Also Github caches the repository data so sometimes Github can provide AtomicCD outdated TrackConfig therefore for wait for around 2 to 3 scans of AtomicCD.
+
+- You will see the log `Out of sync Deployment: python-deployment with Container Name python-container` and `Sync Successfull!`. This means AtomicCD have succefully executed CD for python app and change the python app version from `3.9` to `3.10`. 
 
 - You can confirm the changed python app version by first getting the pod name from the command: `kubectl get pods` and copying the pod name with prefix `python-deployment` and then finally running the command `kubectl describe pod python-deployment-pod-name` **(change python-deployment-pod-name with the actual podname of python-deployment)**.
 
