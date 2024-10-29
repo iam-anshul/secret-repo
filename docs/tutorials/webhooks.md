@@ -4,7 +4,9 @@ sidebar_position: 2
 
 # Webhook
 
-This tutorial shows how to set webhooks triggers for AtomicCD in Github.
+You can set webhook triggers in your git repository so that whenever there is a change in Target Config in github repository, AtomicCD instantly scans for the new Target Config.
+
+This tutorial shows how to set webhooks triggers for AtomicCD in Github Repository.
 
 1. First you need to follow [Deploy AtomicCD On Kubernetes Cluster](deploy.md#below-are-the-steps-to-setup-atomiccd-to-implement-continuous-delivery-for-a-python-application) tutorial upto step **6** if you want webhook triggers without trigger authentication else if you want to set webhook trigger authentication follow upto step 5. Skip the next step (step2) if you are moving without trigger authentication.
 
@@ -90,9 +92,20 @@ This tutorial shows how to set webhooks triggers for AtomicCD in Github.
 
 13. select `Enable SSL verfication`
 
-14. Select `Just the push event.` in `Which events would you like to trigger this webhook?` section. Click on Add webhook.
+14. Select `Just the push event.` in `Which events would you like to trigger this webhook?` section. 
 
 15. Webhook config should look like the below picture.
   ![github-webhook-config](../../static/img/github-webhook-config.png)
 
+16. Click on Add webhook.
 
+
+### Trigger Webbhook
+
+- Monitor logs of AtomicCD with command: `kubectl logs pod-name` (change "pod-name" with the name of AtomicCD pod).
+
+- Change `containerTag` field in your Target Config in github repository from `3.9` to `3.10`.
+
+- You will instantly see `recieved webhook request`, `Authenticating webhook...`(if trigger authentication setup), `Webhook authentication successful!`(if trigger authentication setup) and `Recieved webhook trigger. Syncing` in AtomicCD container log. This means AtomicCD has recieved webhook trigger and scanning for the new Target Config in the git repository.
+
+---
