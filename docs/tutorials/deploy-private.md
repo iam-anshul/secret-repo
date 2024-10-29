@@ -1,17 +1,16 @@
 ---
-sidebar_position: 1
+sidebar_position: 2
 ---
 
-# Deploy AtomicCD On Kubernetes Cluster
+# Deploy AtomicCD On Kubernetes Cluster (Private Repo)
 
-This tutorial shows how to deploy AtomicCD a Kubernetes Cluster with a Track Config file placed on a public Github repository.
+This tutorial shows how to deploy AtomicCD a Kubernetes Cluster with a Track Config file placed on a private Github repository.
 
 ### Pre-requisites:
 
 - A Kubernetes cluster with admin privileges.
-- A Github public repository to place Target Config file.
-- **If repository is private:** A Personal Access Token of the private repository (with read access for the repository contents). If using Github Fined-grained Tokens the `Contents` permission with `Read-only` access  
-  can be used.
+- A Github private repository to place Target Config file.
+- A Personal Access Token of the private repository (with read access for the repository contents). If using Github Fined-grained Tokens the `Contents` permission with `Read-only` access can be used.
 
 ### Below are the steps to setup AtomicCD to implement continuous delivery for a python application:
 
@@ -114,12 +113,11 @@ targetConfig:
               - containerPort: 80
     ```
 
-    - Apply the file with `kubectl apply -f python-deployment.yaml` command.
+    - Apply the file with `kubectl apply -f python-deployment.yaml` command. 
+     
+6. Create a Configmap name with a Track Config file
 
-6. Create a Configmap name with a Track Config file. Follow 6a if repository if public 
-   otherwise follow 6b
-
-    - **(6a)** Make a file named `configmap.yaml`. Below in the track config configmap, replace "your github repository url" with your actual repository URL. Copy the final contents in your `configmap.yaml` file. Make sure the branch is `main`.
+    - Make a file named `configmap.yaml`. Below in the track config configmap, replace "your github repository url" with your actual repository URL. Change **your github personal access token** with the personal access token for your github private repository. Copy the final contents in your `configmap.yaml` file. Make sure the branch is `main`.
 
     ```yaml
     apiVersion: v1
@@ -134,26 +132,11 @@ targetConfig:
               token: your github personal access token
     ```
 
-    - **(6b)** Make a file named `configmap.yaml`. Below in the track config configmap, replace "your github repository url" with your actual repository URL. Change **your github personal access token** with the personal access token for your github private repository. Copy the final contents in your `configmap.yaml` file. Make sure the branch is `main`.
-
-    ```yaml
-    apiVersion: v1
-    kind: ConfigMap
-    metadata:
-        name: atomic-cd-cm
-    data:
-        trackConfig.yaml: |
-            trackConfig:
-              repoURL: your github repository url
-              path: /targetConfig.yaml
-    ```
-
     - Apply the file with `kubectl apply -f configmap.yaml` command.
 
 7. Deploy AtomicCD
 
-   - Make a file named `deploy.yaml` and copy the contents of the below AtomicCD deployment 
-   manifest in it.
+   - Make a file named `deploy.yaml` and copy the contents of the below AtomicCD deployment manifest in it.
 
     ```yaml
     apiVersion: apps/v1
@@ -210,3 +193,5 @@ targetConfig:
 - In the result of above command you can check the container verson in `image` field.
 
 ---
+
+
