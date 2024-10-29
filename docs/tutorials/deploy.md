@@ -10,8 +10,7 @@ This tutorial shows how to deploy AtomicCD a Kubernetes Cluster with a Track Con
 
 - A Kubernetes cluster with admin privileges.
 - A Github public repository to place Target Config file.
-- **If repository is private:** A Personal Access Token of the private repository (with read access for the repository contents). If using Github Fined-grained Tokens the `Contents` permission with `Read-only` access  
-  can be used.
+- **If repository is private:** A Personal Access Token of the private repository (with read access for the repository contents). If using Github Fined-grained Tokens, the `Contents` permission with `Read-only` access can be used.
 
 ### Below are the steps to setup AtomicCD to implement continuous delivery for a python application:
 
