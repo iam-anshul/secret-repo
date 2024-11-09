@@ -3,18 +3,18 @@ import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
 
 const config: Config = {
-  title: "Scalegen Document-copilot",
-  tagline: "Document copilot allows you to chat on any type of document.",
-  favicon: "img/logo_icon.svg",
+  title: "AtomicCD",
+  tagline: "AtomicCD Documentation",
+  favicon: "img/logo.jpg",
 
   // Set the production url of your site here
-  url: "https://document-copilot.scalegen.ai",
+  url: "",
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: "/",
 
-  organizationName: "scalegen", // Usually your GitHub org/user name.
-  projectName: "scalegen-docs", // Usually your repo name.
+  organizationName: "AtomicCD", // Usually your GitHub org/user name.
+  projectName: "AtomicCD-docs", // Usually your repo name.
 
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
@@ -54,22 +54,9 @@ const config: Config = {
     navbar: {
       // title: "My Site",
       logo: {
-        alt: "Scalegen document-copilot",
-        src: "img/logo_blue.svg",
+        alt: "AtomicCD",
+        src: "img/logo.jpg",
       },
-      items: [
-        {
-          type: "docSidebar",
-          sidebarId: "tutorialSidebar",
-          position: "left",
-          label: "Home",
-        },
-        {
-          href: "https://document-copilot.scalegen.ai/",
-          label: "Copilot",
-          position: "right",
-        },
-      ],
     },
     footer: {
       style: "dark",
@@ -88,7 +75,7 @@ const config: Config = {
           items: [
             {
               label: "Linkedin",
-              href: "https://www.linkedin.com/company/scalegen-ai",
+              href: "https://www.linkedin.com/in/as142000",
             },
           ],
         },
@@ -96,12 +83,8 @@ const config: Config = {
           title: "More",
           items: [
             {
-              label: "Copilot",
-              href: "https://document-copilot.scalegen.ai/",
-            },
-            {
-              label: "Website",
-              href: "https://www.scalegen.ai/",
+              label: "AtomicCD",
+              href: "https://github.com/iam-anshul/AtomicCD",
             },
           ],
         },
